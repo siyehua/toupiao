@@ -562,10 +562,48 @@ function renderForm() {
         <button type="submit">${langData.submitText}</button>
     `;
     
-    form.onsubmit = function(e) {
+    form.onsubmit = async function(e) {
         e.preventDefault();
-        // 这里可以添加表单验证和提交逻辑
-        alert('感谢您的参与！');
+        
+        // 收集表单数据
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            if (data[key]) {
+                if (Array.isArray(data[key])) {
+                    data[key].push(value);
+                } else {
+                    data[key] = [data[key], value];
+                }
+            } else {
+                data[key] = value;
+            }
+        });
+        
+        // 添加语言信息
+        data.language = currentLang;
+        
+        try {
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert(currentLang === 'zh' ? '感谢您的参与！' : 'Спасибо за участие!');
+                form.reset();
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            console.error('提交失败:', error);
+            alert(currentLang === 'zh' ? '提交失败，请稍后重试' : 'Ошибка отправки, попробуйте позже');
+        }
     };
 }
 
