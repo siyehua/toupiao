@@ -7,9 +7,7 @@
     "start": "vercel dev",
     "deploy": "vercel deploy --prod"
   },
-  "dependencies": {
-    "@vercel/blob": "^0.19.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "vercel": "^28.16.11"
   }

@@ -19,23 +19,14 @@ export default async function handler(req, res) {
       language: data.language || 'zh'
     };
 
-    // 存储数据到 Blob Store
-    const blob = await put(
-      `submissions/${submissionId}.json`,
-      JSON.stringify(submissionData),
-      {
-        access: 'public',
-        contentType: 'application/json'
-      }
-    );
-
+    // 返回成功响应
     return res.status(200).json({ 
       success: true, 
       id: submissionId,
-      url: blob.url
+      data: submissionData
     });
   } catch (error) {
-    console.error('Error storing submission:', error);
-    return res.status(500).json({ error: 'Failed to store submission' });
+    console.error('Error processing submission:', error);
+    return res.status(500).json({ error: 'Failed to process submission' });
   }
 } 
