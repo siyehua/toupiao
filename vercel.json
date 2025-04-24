@@ -2,7 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
+      "src": "api/submit.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/list.js",
       "use": "@vercel/node"
     },
     {
@@ -12,8 +16,12 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/api/submit",
+      "dest": "/api/submit.js"
+    },
+    {
+      "src": "/api/list",
+      "dest": "/api/list.js"
     },
     {
       "src": "/(.*)",
