@@ -1,4 +1,5 @@
-import { put } from '@vercel/blob';
+import fs from 'fs';
+import path from 'path';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,14 +20,22 @@ export default async function handler(req, res) {
       language: data.language || 'zh'
     };
 
-    // 返回成功响应
+    // 确保 submissions 目录存在
+    const submissionsDir = path.join(process.cwd(), 'submissions');
+    if (!fs.existsSync(submissionsDir)) {
+      fs.mkdirSync(submissionsDir, { recursive: true });
+    }
+
+    // 存储数据到文件
+    const filePath = path.join(submissionsDir, `${submissionId}.json`);
+    fs.writeFileSync(filePath, JSON.stringify(submissionData, null, 2));
+
     return res.status(200).json({ 
       success: true, 
-      id: submissionId,
-      data: submissionData
+      id: submissionId
     });
   } catch (error) {
-    console.error('Error processing submission:', error);
-    return res.status(500).json({ error: 'Failed to process submission' });
+    console.error('Error storing submission:', error);
+    return res.status(500).json({ error: 'Failed to store submission' });
   }
 } 
