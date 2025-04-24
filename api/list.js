@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+import { list } from '@vercel/blob';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -7,25 +6,24 @@ export default async function handler(req, res) {
   }
 
   try {
-    const submissionsDir = path.join(process.cwd(), 'submissions');
-    
-    // 确保目录存在
-    if (!fs.existsSync(submissionsDir)) {
-      return res.status(200).json({ submissions: [] });
-    }
+    // 获取所有提交的 blob
+    const { blobs } = await list({
+      prefix: 'submissions/',
+      limit: 1000 // 可以根据需要调整
+    });
 
-    // 读取所有提交文件
-    const files = fs.readdirSync(submissionsDir);
-    const submissions = files
-      .filter(file => file.endsWith('.json'))
-      .map(file => {
-        const filePath = path.join(submissionsDir, file);
-        const content = fs.readFileSync(filePath, 'utf8');
+    // 获取每个提交的内容
+    const submissions = await Promise.all(
+      blobs.map(async (blob) => {
+        const response = await fetch(blob.url);
+        const data = await response.json();
         return {
-          id: file.replace('.json', ''),
-          ...JSON.parse(content)
+          id: blob.pathname.split('/').pop().replace('.json', ''),
+          ...data,
+          url: blob.url
         };
-      });
+      })
+    );
 
     return res.status(200).json({ submissions });
   } catch (error) {
