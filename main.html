@@ -603,10 +603,12 @@ function renderForm() {
             
             if (result.success) {
                 const message = currentLang === 'zh' 
-                    ? '感谢您的参与！欢迎加入我们的 WhatsApp 群：https://chat.whatsapp.com/HPeU9LzlGVA7oLHsv0POJr'
-                    : 'Спасибо за участие! Присоединяйтесь к нашей группе WhatsApp: https://chat.whatsapp.com/HPeU9LzlGVA7oLHsv0POJr';
+                    ? '感谢您的参与！'
+                    : 'Спасибо за участие!';
                 alert(message);
                 form.reset();
+                // 跳转到 WhatsApp 群链接
+                window.location.href = 'https://chat.whatsapp.com/HPeU9LzlGVA7oLHsv0POJr';
             } else {
                 throw new Error(result.error || '提交失败');
             }
