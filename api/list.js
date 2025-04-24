@@ -16,20 +16,10 @@ export default async function handler(req, res) {
     const submissions = await Promise.all(
       blobs.map(async (blob) => {
         const response = await fetch(blob.url);
-        const text = await response.text();
+        const data = await response.json();
         
-        // 将文本格式转换为对象
-        const data = {};
-        text.split('\n').forEach(line => {
-          const [key, ...values] = line.split(': ');
-          if (key && values.length > 0) {
-            const value = values.join(': ');
-            data[key] = value.includes(',') ? value.split(', ') : value;
-          }
-        });
-
         return {
-          id: blob.pathname.split('/').pop().replace('.txt', ''),
+          id: blob.pathname.split('/').pop().replace('.json', ''),
           ...data,
           url: blob.url
         };

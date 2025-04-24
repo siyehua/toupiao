@@ -19,23 +19,13 @@ export default async function handler(req, res) {
       language: data.language || 'zh'
     };
 
-    // 将数据转换为表格格式
-    const tableData = Object.entries(submissionData)
-      .map(([key, value]) => {
-        if (Array.isArray(value)) {
-          return `${key}: ${value.join(', ')}`;
-        }
-        return `${key}: ${value}`;
-      })
-      .join('\n');
-
     // 存储数据到 Blob Store
     const blob = await put(
-      `submissions/${submissionId}.txt`,
-      tableData,
+      `submissions/${submissionId}.json`,
+      JSON.stringify(submissionData, null, 2),
       {
         access: 'public',
-        contentType: 'text/plain'
+        contentType: 'application/json'
       }
     );
 
