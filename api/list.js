@@ -9,16 +9,27 @@ export default async function handler(req, res) {
     // 获取所有提交的 blob
     const { blobs } = await list({
       prefix: 'submissions/',
-      limit: 1000 // 可以根据需要调整
+      limit: 1000
     });
 
     // 获取每个提交的内容
     const submissions = await Promise.all(
       blobs.map(async (blob) => {
         const response = await fetch(blob.url);
-        const data = await response.json();
+        const text = await response.text();
+        
+        // 将文本格式转换为对象
+        const data = {};
+        text.split('\n').forEach(line => {
+          const [key, ...values] = line.split(': ');
+          if (key && values.length > 0) {
+            const value = values.join(': ');
+            data[key] = value.includes(',') ? value.split(', ') : value;
+          }
+        });
+
         return {
-          id: blob.pathname.split('/').pop().replace('.json', ''),
+          id: blob.pathname.split('/').pop().replace('.txt', ''),
           ...data,
           url: blob.url
         };
