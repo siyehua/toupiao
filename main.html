@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉尔吉斯高校大学生消费行为调查问卷</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .lang-switcher {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            margin-left: 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .lang-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .question h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .required::after {
+            content: "*";
+            color: red;
+            margin-left: 5px;
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .note {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+        <button class="lang-btn" onclick="switchLanguage('ru')">Русский</button>
+    </div>
+
+    <div class="container">
+        <form id="surveyForm">
+            <!-- 内容由JavaScript动态生成 -->
+        </form>
+    </div>
+
+<script>
+const translations = {
+    zh: {
+        title: "吉尔吉斯高校大学生消费行为调查问卷",
+        note: "本问卷旨在了解大学生的消费习惯与偏好，帮助我们优化电商平台服务。所有数据仅用于内部分析，不对外公开，感谢您的参与！",
+        sections: {
+            basicInfo: {
+                title: "一、基本信息",
+                questions: [
+                    {
+                        type: "radio",
+                        question: "您目前所在的学校是？",
+                        options: [
+                            "吉尔吉斯民族大学",
+                            "吉尔吉斯国立大学",
+                            "吉尔吉斯国立技术大学",
+                            "比什凯克国立大学",
+                            "土耳其玛纳斯国立大学",
+                            "其他"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "radio",
+                        question: "您的年级是？",
+                        options: ["大一", "大二", "大三", "大四", "研究生"],
+                        required: true
+                    },
+                    {
+                        type: "radio",
+                        question: "性别",
+                        options: ["男", "女", "不愿透露"],
+                        required: true
+                    }
+                ]
+            },
+            consumption: {
+                title: "二、消费情况",
+                questions: [
+                    {
+                        type: "radio",
+                        question: "您每月平均可支配零花钱是多少？（сом）",
+                        options: [
+                            "少于 1000 сом",
+                            "1000 – 3000 сом",
+                            "3000 – 5000 сом",
+                            "5000 – 8000 сом",
+                            "超过 8000 сом"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "checkbox",
+                        question: "您通常将零花钱花在哪些方面？（可多选）",
+                        options: [
+                            "食品与饮料",
+                            "衣物服饰",
+                            "电子产品",
+                            "美妆护肤",
+                            "网络购物",
+                            "交通",
+                            "娱乐游戏",
+                            "教育培训",
+                            "其他"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "radio",
+                        question: "您更倾向于在哪种平台购物？",
+                        options: [
+                            "实体店",
+                            "Instagram/Telegram 卖家",
+                            "本地电商平台（如Ozon、Wildberries）",
+                            "外国平台（如AliExpress、Temu）",
+                            "从不网购"
+                        ],
+                        required: true
+                    }
+                ]
+            },
+            preferences: {
+                title: "三、购物偏好",
+                questions: [
+                    {
+                        type: "radio",
+                        question: "您通常多久网购一次？",
+                        options: ["每周", "每月1-2次", "偶尔", "很少或从不"],
+                        required: true
+                    },
+                    {
+                        type: "checkbox",
+                        question: "您在网购时最看重哪些因素？（可多选）",
+                        options: [
+                            "价格",
+                            "商品质量",
+                            "送货速度",
+                            "商品种类",
+                            "售后/退货",
+                            "评论评分"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "checkbox",
+                        question: "以下哪些商品类别您最感兴趣？（最多选3项）",
+                        options: [
+                            "时尚服饰（如衣服、丝袜等）",
+                            "饰品配件（如项链、耳环）",
+                            "手机配件",
+                            "美妆护肤",
+                            "零食饮料",
+                            "文具书籍",
+                            "数码产品",
+                            "家居用品",
+                            "健身运动",
+                            "手工艺品",
+                            "其他"
+                        ],
+                        required: true,
+                        maxSelections: 3
+                    },
+                    {
+                        type: "radio",
+                        question: "如果我们在您学校推出次日达+优惠券服务，您是否愿意尝试？",
+                        options: ["一定会", "愿意尝试", "看情况", "不会"],
+                        required: true
+                    }
+                ]
+            },
+            socialMedia: {
+                title: "四、社交媒体影响力",
+                questions: [
+                    {
+                        type: "textarea",
+                        question: "在您所在的学校，有哪些您或同学常关注的网红账号、校园博主或社交媒体主页？（请填写名称或链接，支持多条）",
+                        placeholder: "请在此输入...",
+                        required: true
+                    }
+                ]
+            },
+            contact: {
+                title: "联系方式",
+                questions: [
+                    {
+                        type: "text",
+                        question: "如果您希望获取首单优惠码，请留下联系方式（可选）：",
+                        placeholder: "WhatsApp / Telegram",
+                        required: false
+                    }
+                ]
+            }
+        },
+        submitText: "提交问卷"
+    },
+    ru: {
+        title: "ИССЛЕДОВАНИЕ ПОТРЕБИТЕЛЬСКОГО ПОВЕДЕНИЯ СТУДЕНТОВ В КЫРГЫЗСТАНЕ",
+        note: "Данный опрос предназначен для изучения потребительских привычек студентов с целью улучшения сервиса нашей торговой платформы. Все данные используются исключительно в исследовательских целях. Спасибо за участие!",
+        sections: {
+            basicInfo: {
+                title: "1. ОСНОВНАЯ ИНФОРМАЦИЯ",
+                questions: [
+                    {
+                        type: "radio",
+                        question: "В каком университете вы учитесь?",
+                        options: [
+                            "Кыргызский национальный университет им. Ж. Баласагына",
+                            "Кыргызский государственный университет им. И.Арабаева",
+                            "Кыргызский государственный технический университет им. И. Раззакова",
+                            "Бишкекский государственный университет",
+                            "Кыргызско-Турецкий университет «Манас»",
+                            "Другое"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "radio",
+                        question: "Какой у вас курс обучения?",
+                        options: ["1 курс", "2 курс", "3 курс", "4 курс", "Магистратура"],
+                        required: true
+                    },
+                    {
+                        type: "radio",
+                        question: "Пол",
+                        options: ["Мужской", "Женский", "Предпочитаю не указывать"],
+                        required: true
+                    }
+                ]
+            },
+            consumption: {
+                title: "2. РАСХОДЫ",
+                questions: [
+                    {
+                        type: "radio",
+                        question: "Какой ваш средний ежемесячный бюджет? (в сомах)",
+                        options: [
+                            "Менее 1000 сомов",
+                            "1000 – 3000 сомов",
+                            "3000 – 5000 сомов",
+                            "5000 – 8000 сомов",
+                            "Более 8000 сомов"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "checkbox",
+                        question: "На что вы чаще всего тратите деньги? (можно выбрать несколько)",
+                        options: [
+                            "Еда и напитки",
+                            "Одежда и аксессуары",
+                            "Электроника",
+                            "Косметика и уход",
+                            "Онлайн-шопинг",
+                            "Транспорт",
+                            "Развлечения/игры",
+                            "Образование и курсы",
+                            "Другое"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "radio",
+                        question: "Где вы предпочитаете совершать покупки?",
+                        options: [
+                            "В физических магазинах",
+                            "Через Instagram/Telegram",
+                            "Локальные платформы (Ozon, Wildberries)",
+                            "Иностранные платформы (AliExpress, Temu)",
+                            "Я не совершаю покупки онлайн"
+                        ],
+                        required: true
+                    }
+                ]
+            },
+            preferences: {
+                title: "3. ПОКУПАТЕЛЬСКИЕ ПРЕДПОЧТЕНИЯ",
+                questions: [
+                    {
+                        type: "radio",
+                        question: "Как часто вы делаете покупки онлайн?",
+                        options: ["Каждую неделю", "1-2 раза в месяц", "Иногда", "Редко или никогда"],
+                        required: true
+                    },
+                    {
+                        type: "checkbox",
+                        question: "Что для вас важно при покупке онлайн? (можно выбрать несколько)",
+                        options: [
+                            "Цена",
+                            "Качество товаров",
+                            "Скорость доставки",
+                            "Ассортимент",
+                            "Условия возврата",
+                            "Отзывы/рейтинг"
+                        ],
+                        required: true
+                    },
+                    {
+                        type: "checkbox",
+                        question: "Какие категории товаров вам интересны? (макс. 3 варианта)",
+                        options: [
+                            "Одежда и мода (включая колготки)",
+                            "Украшения и аксессуары (серьги, кольца и др.)",
+                            "Телефоны и аксессуары",
+                            "Косметика и уход",
+                            "Снэки и напитки",
+                            "Канцелярия и книги",
+                            "Гаджеты и техника",
+                            "Товары для дома",
+                            "Фитнес и спорт",
+                            "Хендмейд",
+                            "Другое"
+                        ],
+                        required: true,
+                        maxSelections: 3
+                    },
+                    {
+                        type: "radio",
+                        question: "Если мы предложим доставку на следующий день + скидочные купоны в вашем вузе, попробуете ли вы наш сервис?",
+                        options: ["Обязательно попробую", "Готов(а) попробовать", "Зависит от ситуации", "Не заинтересован(а)"],
+                        required: true
+                    }
+                ]
+            },
+            socialMedia: {
+                title: "4. ВЛИЯНИЕ СОЦСЕТЕЙ",
+                questions: [
+                    {
+                        type: "textarea",
+                        question: "В вашем университете какие популярные блогеры, студенческие аккаунты или паблики в соцсетях наиболее известны или интересны? (укажите названия или ссылки, можно несколько)",
+                        placeholder: "Введите здесь...",
+                        required: true
+                    }
+                ]
+            },
+            contact: {
+                title: "КОНТАКТЫ",
+                questions: [
+                    {
+                        type: "text",
+                        question: "Если хотите получить промокод на первую покупку — оставьте ваш контакт (по желанию):",
+                        placeholder: "WhatsApp / Telegram",
+                        required: false
+                    }
+                ]
+            }
+        },
+        submitText: "Отправить"
+    }
+};
+
+let currentLang = 'zh';
+
+function switchLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === (lang === 'zh' ? '中文' : 'Русский')) {
+            btn.classList.add('active');
+        }
+    });
+    renderForm();
+}
+
+function renderQuestion(q) {
+    let html = `<div class="question">
+        <h3>${q.question}${q.required ? '<span class="required"></span>' : ''}</h3>
+        <div class="error-message"></div>`;
+
+    switch(q.type) {
+        case 'radio':
+            html += q.options.map(opt => `
+                <label>
+                    <input type="radio" name="${q.question}" value="${opt}" 
+                           ${q.required ? 'required' : ''}>
+                    ${opt}
+                </label>
+            `).join('');
+            break;
+        
+        case 'checkbox':
+            html += q.options.map(opt => `
+                <label>
+                    <input type="checkbox" name="${q.question}" value="${opt}"
+                           ${q.required ? 'required' : ''}
+                           ${q.maxSelections ? `onchange="checkMaxSelections(this, ${q.maxSelections})"` : ''}>
+                    ${opt}
+                </label>
+            `).join('');
+            break;
+            
+        case 'textarea':
+            html += `
+                <textarea name="${q.question}" 
+                          placeholder="${q.placeholder || ''}"
+                          ${q.required ? 'required' : ''}
+                          rows="3"></textarea>
+            `;
+            break;
+            
+        case 'text':
+            html += `
+                <input type="text" 
+                       name="${q.question}" 
+                       placeholder="${q.placeholder || ''}"
+                       ${q.required ? 'required' : ''}>
+            `;
+            break;
+    }
+    
+    return html + '</div>';
+}
+
+function checkMaxSelections(checkbox, max) {
+    const checkboxes = document.querySelectorAll(`input[name="${checkbox.name}"]`);
+    const checked = Array.from(checkboxes).filter(cb => cb.checked);
+    if (checked.length > max) {
+        checkbox.checked = false;
+        alert(`最多只能选择${max}项`);
+    }
+}
+
+function renderForm() {
+    const form = document.getElementById('surveyForm');
+    const langData = translations[currentLang];
+    
+    form.innerHTML = `
+        <h1>${langData.title}</h1>
+        <div class="note">${langData.note}</div>
+        ${Object.values(langData.sections).map(section => `
+            <div class="section">
+                <h2>${section.title}</h2>
+                ${section.questions.map(renderQuestion).join('')}
+            </div>
+        `).join('')}
+        <button type="submit">${langData.submitText}</button>
+    `;
+    
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        // 这里可以添加表单验证和提交逻辑
+        alert('感谢您的参与！');
+    };
+}
+
+// 初始化表单
+renderForm();
+</script>
+</body>
+</html>
