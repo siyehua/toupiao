@@ -240,6 +240,7 @@ const translations = {
                             "Instagram/Telegram 卖家",
                             "本地电商平台（如Ozon、Wildberries）",
                             "外国平台（如AliExpress、Temu）",
+                            "其他平台(Taobao、Pinduoduo 等等)",
                             "从不网购"
                         ],
                         required: true
@@ -270,7 +271,7 @@ const translations = {
                     },
                     {
                         type: "checkbox",
-                        question: "以下哪些商品类别您最感兴趣？（最多选3项）",
+                        question: "以下哪些商品类别您最感兴趣？（最多选5项）",
                         options: [
                             "时尚服饰（如衣服、丝袜等）",
                             "饰品配件（如项链、耳环）",
@@ -285,7 +286,7 @@ const translations = {
                             "其他"
                         ],
                         required: true,
-                        maxSelections: 3
+                        maxSelections: 5
                     },
                     {
                         type: "radio",
@@ -393,6 +394,7 @@ const translations = {
                             "Через Instagram/Telegram",
                             "Локальные платформы (Ozon, Wildberries)",
                             "Иностранные платформы (AliExpress, Temu)",
+                            "Другие платформы (Taobao, Pinduoduo и др.)",
                             "Я не совершаю покупки онлайн"
                         ],
                         required: true
@@ -423,7 +425,7 @@ const translations = {
                     },
                     {
                         type: "checkbox",
-                        question: "Какие категории товаров вам интересны? (макс. 3 варианта)",
+                        question: "Какие категории товаров вам интересны? (макс. 5 вариантов)",
                         options: [
                             "Одежда и мода (включая колготки)",
                             "Украшения и аксессуары (серьги, кольца и др.)",
@@ -438,7 +440,7 @@ const translations = {
                             "Другое"
                         ],
                         required: true,
-                        maxSelections: 3
+                        maxSelections: 5
                     },
                     {
                         type: "radio",
@@ -600,7 +602,10 @@ function renderForm() {
             const result = await response.json();
             
             if (result.success) {
-                alert(currentLang === 'zh' ? '感谢您的参与！' : 'Спасибо за участие!');
+                const message = currentLang === 'zh' 
+                    ? '感谢您的参与！欢迎加入我们的 WhatsApp 群：https://chat.whatsapp.com/HPeU9LzlGVA7oLHsv0POJr'
+                    : 'Спасибо за участие! Присоединяйтесь к нашей группе WhatsApp: https://chat.whatsapp.com/HPeU9LzlGVA7oLHsv0POJr';
+                alert(message);
                 form.reset();
             } else {
                 throw new Error(result.error || '提交失败');
