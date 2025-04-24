@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const submissionData = {
       ...data,
       timestamp,
-      language: data.language || 'zh'
+      language: data.language || 'ru'
     };
 
     // 存储数据到 Blob Store
