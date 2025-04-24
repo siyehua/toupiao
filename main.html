@@ -490,7 +490,7 @@ function switchLanguage(lang) {
 
 function renderQuestion(q) {
     let html = `<div class="question">
-        <h3>${q.question}${q.required ? '<span class="required"></span>' : ''}</h3>
+        <h3>${q.question}${q.required && q.type !== 'checkbox' ? '<span class="required"></span>' : ''}</h3>
         <div class="error-message"></div>`;
 
     switch(q.type) {
@@ -508,7 +508,6 @@ function renderQuestion(q) {
             html += q.options.map(opt => `
                 <label>
                     <input type="checkbox" name="${q.question}" value="${opt}"
-                           ${q.required ? 'required' : ''}
                            ${q.maxSelections ? `onchange="checkMaxSelections(this, ${q.maxSelections})"` : ''}>
                     ${opt}
                 </label>
@@ -568,7 +567,9 @@ function renderForm() {
         // 收集表单数据
         const formData = new FormData(form);
         const data = {};
-        formData.forEach((value, key) => {
+        
+        // 处理所有表单字段
+        for (let [key, value] of formData.entries()) {
             if (data[key]) {
                 if (Array.isArray(data[key])) {
                     data[key].push(value);
@@ -578,7 +579,7 @@ function renderForm() {
             } else {
                 data[key] = value;
             }
-        });
+        }
         
         // 添加语言信息
         data.language = currentLang;
