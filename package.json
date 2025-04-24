@@ -1,0 +1,14 @@
+{
+  "name": "kyrgyz-student-survey",
+  "version": "1.0.0",
+  "description": "吉尔吉斯高校大学生消费行为调查问卷",
+  "main": "main.html",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^28.16.11"
+  }
+} 
